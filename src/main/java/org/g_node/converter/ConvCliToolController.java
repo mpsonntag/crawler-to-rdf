@@ -75,6 +75,10 @@ public class ConvCliToolController implements CliToolController {
             return;
         }
 
+        if (!CtrlCheckService.isValidRdfFile(inputFile)) {
+            return;
+        }
+
         final String outputFormat = cmd.getOptionValue("f", "TTL").toUpperCase(Locale.ENGLISH);
         if (!CtrlCheckService.isSupportedOutputFormat(outputFormat, RDFService.RDF_FORMAT_MAP.keySet())) {
             return;
