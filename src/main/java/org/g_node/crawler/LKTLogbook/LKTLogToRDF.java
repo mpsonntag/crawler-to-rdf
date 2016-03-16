@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.g_node.micro.commons.AppUtils;
-import org.g_node.micro.commons.RDFService;
 import org.g_node.micro.rdf.RdfConstants;
+import org.g_node.micro.rdf.RdfFileServiceJena;
 import org.g_node.micro.rdf.RdfUtilsJena;
 
 /**
@@ -108,7 +108,7 @@ public final class LKTLogToRDF {
 
         allSheets.stream().forEach(a -> this.addSubject(a, provID));
 
-        RDFService.saveModelToFile(outputFile, this.model, outputFormat);
+        RdfFileServiceJena.saveModelToFile(outputFile, this.model, outputFormat);
     }
 
     /**

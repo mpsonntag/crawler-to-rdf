@@ -20,7 +20,7 @@ import org.apache.commons.cli.Options;
 import org.apache.jena.riot.RiotException;
 import org.apache.log4j.Logger;
 import org.g_node.micro.commons.CliToolController;
-import org.g_node.micro.commons.RDFService;
+import org.g_node.micro.rdf.RdfFileServiceJena;
 import org.g_node.srv.CliOptionService;
 import org.g_node.srv.CtrlCheckService;
 
@@ -66,7 +66,7 @@ public class ConvCliToolController implements CliToolController {
             return;
         }
 
-        final Set<String> checkExtension = RDFService.RDF_FORMAT_EXTENSION.values()
+        final Set<String> checkExtension = RdfFileServiceJena.RDF_FORMAT_EXTENSION.values()
                 .stream()
                 .map(c->c.toUpperCase(Locale.ENGLISH))
                 .collect(Collectors.toSet());
@@ -74,12 +74,12 @@ public class ConvCliToolController implements CliToolController {
             return;
         }
 
-        if (!RDFService.isValidRdfFile(inputFile)) {
+        if (!RdfFileServiceJena.isValidRdfFile(inputFile)) {
             return;
         }
 
         final String outputFormat = cmd.getOptionValue("f", "TTL").toUpperCase(Locale.ENGLISH);
-        if (!CtrlCheckService.isSupportedOutputFormat(outputFormat, RDFService.RDF_FORMAT_MAP.keySet())) {
+        if (!CtrlCheckService.isSupportedOutputFormat(outputFormat, RdfFileServiceJena.RDF_FORMAT_MAP.keySet())) {
             return;
         }
 
@@ -87,15 +87,15 @@ public class ConvCliToolController implements CliToolController {
         final String defaultOutputFile = String.join("", inputFile.substring(0, i), "_out");
         String outputFile = cmd.getOptionValue("o", defaultOutputFile);
 
-        if (!outputFile.toLowerCase().endsWith(RDFService.RDF_FORMAT_EXTENSION.get(outputFormat))) {
-            outputFile = String.join("", outputFile, ".", RDFService.RDF_FORMAT_EXTENSION.get(outputFormat));
+        if (!outputFile.toLowerCase().endsWith(RdfFileServiceJena.RDF_FORMAT_EXTENSION.get(outputFormat))) {
+            outputFile = String.join("", outputFile, ".", RdfFileServiceJena.RDF_FORMAT_EXTENSION.get(outputFormat));
         }
 
         Model convData;
 
         try {
             ConvCliToolController.LOGGER.info("Reading input file...");
-            convData = RDFService.openModelFromFile(inputFile);
+            convData = RdfFileServiceJena.openModelFromFile(inputFile);
 
         } catch (RiotException e) {
             ConvCliToolController.LOGGER.error(e.getMessage());
@@ -104,7 +104,7 @@ public class ConvCliToolController implements CliToolController {
             return;
         }
 
-        RDFService.saveModelToFile(outputFile, convData, outputFormat);
+        RdfFileServiceJena.saveModelToFile(outputFile, convData, outputFormat);
     }
 
 }

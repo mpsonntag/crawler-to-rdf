@@ -19,7 +19,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.log4j.Logger;
 import org.g_node.micro.commons.CliToolController;
-import org.g_node.micro.commons.RDFService;
+import org.g_node.micro.rdf.RdfFileServiceJena;
 import org.g_node.srv.CliOptionService;
 import org.g_node.srv.CtrlCheckService;
 
@@ -95,7 +95,7 @@ public final class LKTLogCliToolController implements CliToolController {
         }
 
         final String outputFormat = cmd.getOptionValue("f", "TTL").toUpperCase(Locale.ENGLISH);
-        if (!CtrlCheckService.isSupportedOutputFormat(outputFormat, RDFService.RDF_FORMAT_MAP.keySet())) {
+        if (!CtrlCheckService.isSupportedOutputFormat(outputFormat, RdfFileServiceJena.RDF_FORMAT_MAP.keySet())) {
             return;
         }
 
@@ -104,8 +104,8 @@ public final class LKTLogCliToolController implements CliToolController {
 
         String outputFile = cmd.getOptionValue("o", defaultOutputFile);
 
-        if (!outputFile.toLowerCase().endsWith(RDFService.RDF_FORMAT_EXTENSION.get(outputFormat))) {
-            outputFile = String.join("", outputFile, ".", RDFService.RDF_FORMAT_EXTENSION.get(outputFormat));
+        if (!outputFile.toLowerCase().endsWith(RdfFileServiceJena.RDF_FORMAT_EXTENSION.get(outputFormat))) {
+            outputFile = String.join("", outputFile, ".", RdfFileServiceJena.RDF_FORMAT_EXTENSION.get(outputFormat));
         }
 
         LKTLogCliToolController.LOGGER.info("Parsing input file...");
