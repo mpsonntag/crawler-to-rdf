@@ -11,7 +11,6 @@
 package org.g_node.converter;
 
 import com.hp.hpl.jena.rdf.model.Model;
-
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -75,7 +74,7 @@ public class ConvCliToolController implements CliToolController {
             return;
         }
 
-        if (!CtrlCheckService.isValidRdfFile(inputFile)) {
+        if (!RDFService.isValidRdfFile(inputFile)) {
             return;
         }
 
