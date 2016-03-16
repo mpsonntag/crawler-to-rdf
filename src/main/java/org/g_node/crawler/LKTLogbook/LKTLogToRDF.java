@@ -29,8 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.g_node.micro.commons.AppUtils;
 import org.g_node.micro.commons.RDFService;
-import org.g_node.micro.commons.RDFUtils;
 import org.g_node.micro.rdf.RdfConstants;
+import org.g_node.micro.rdf.RdfUtilsJena;
 
 /**
  * Class converting parsed data to RDF.
@@ -157,8 +157,8 @@ public final class LKTLogToRDF {
                         this.mainTypedLiteral(currSheet.getDateOfWithdrawal().toString(), XSDDatatype.XSDdate))
                 .addProperty(this.mainProp("hasPermit"), permit);
 
-        RDFUtils.addNonEmptyLiteral(subject, this.mainProp("hasSpeciesName"), currSheet.getSpecies());
-        RDFUtils.addNonEmptyLiteral(subject, this.mainProp("hasScientificName"), currSheet.getScientificName());
+        RdfUtilsJena.addNonEmptyLiteral(subject, this.mainProp("hasSpeciesName"), currSheet.getSpecies());
+        RdfUtilsJena.addNonEmptyLiteral(subject, this.mainProp("hasScientificName"), currSheet.getScientificName());
 
         currSheet.getEntries().stream().forEach(
                 c -> this.addEntry(c, subject, provID, subjectID)
@@ -267,10 +267,10 @@ public final class LKTLogToRDF {
                 )
                 .addLiteral(RDFS.label, currEntry.getExperiment());
 
-        RDFUtils.addNonEmptyLiteral(experiment, this.mainProp("hasParadigm"), currEntry.getParadigm());
-        RDFUtils.addNonEmptyLiteral(experiment, this.mainProp("hasParadigmSpecifics"),
+        RdfUtilsJena.addNonEmptyLiteral(experiment, this.mainProp("hasParadigm"), currEntry.getParadigm());
+        RdfUtilsJena.addNonEmptyLiteral(experiment, this.mainProp("hasParadigmSpecifics"),
                 currEntry.getParadigmSpecifics());
-        RDFUtils.addNonEmptyLiteral(experiment, RDFS.comment, currEntry.getCommentExperiment());
+        RdfUtilsJena.addNonEmptyLiteral(experiment, RDFS.comment, currEntry.getCommentExperiment());
 
         return experiment;
     }
@@ -315,8 +315,8 @@ public final class LKTLogToRDF {
             res.addProperty(this.mainProp("hasWeight"), weight);
         }
 
-        RDFUtils.addNonEmptyLiteral(res, RDFS.comment, currEntry.getCommentSubject());
-        RDFUtils.addNonEmptyLiteral(res, this.mainProp("hasFeed"), currEntry.getFeed());
+        RdfUtilsJena.addNonEmptyLiteral(res, RDFS.comment, currEntry.getCommentSubject());
+        RdfUtilsJena.addNonEmptyLiteral(res, this.mainProp("hasFeed"), currEntry.getFeed());
 
         return res;
     }
