@@ -45,7 +45,7 @@ public class ConvCliToolController implements CliToolController {
         final Option opIn = CliOptionService.getInFileOpt(
                 "Input RDF file that's supposed to be converted into a different RDF format.");
         final Option opOut = CliOptionService.getOutFileOpt("");
-        final Option opFormat = CliOptionService.getOutFormatOpt("");
+        final Option opFormat = CliOptionService.getOutFormatOpt("", RdfFileServiceJena.RDF_FORMAT_MAP.keySet());
 
         options.addOption(opHelp);
         options.addOption(opIn);

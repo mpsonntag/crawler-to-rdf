@@ -10,6 +10,11 @@
 
 package org.g_node.srv;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.cli.Option;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
@@ -96,16 +101,18 @@ public class CliOptionServiceTest {
     public void testOutFormatOpt() throws Exception {
         final String shortOpt = "f";
         final String longOpt = "out-format";
-        final String desc = "Optional: format of the RDF file that will be written.";
+        final Set<String> formats = new HashSet<>(Arrays.asList("optOne", "optTwo"));
+        final String desc = String.join("", "Optional: format of the RDF file that will be written.\n",
+                                            "Supported file formats: ", formats.toString());
         final String altDesc = "Different message.";
         final Boolean isRequired = false;
         final Boolean hasArgument = true;
         final Boolean hasArguments = false;
 
-        final Option defaultOption = CliOptionService.getOutFormatOpt("");
+        final Option defaultOption = CliOptionService.getOutFormatOpt("", formats);
         this.assertOption(defaultOption, shortOpt, longOpt, desc, isRequired, hasArgument, hasArguments);
 
-        final Option altDescOption = CliOptionService.getOutFormatOpt(altDesc);
+        final Option altDescOption = CliOptionService.getOutFormatOpt(altDesc, formats);
         this.assertOption(altDescOption, shortOpt, longOpt, altDesc, isRequired, hasArgument, hasArguments);
     }
 

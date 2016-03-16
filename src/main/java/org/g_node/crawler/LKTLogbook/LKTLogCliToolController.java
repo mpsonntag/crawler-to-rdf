@@ -67,7 +67,7 @@ public final class LKTLogCliToolController implements CliToolController {
         final Option opHelp = CliOptionService.getHelpOpt("");
         final Option opIn = CliOptionService.getInFileOpt("");
         final Option opOut = CliOptionService.getOutFileOpt("");
-        final Option opFormat = CliOptionService.getOutFormatOpt("");
+        final Option opFormat = CliOptionService.getOutFormatOpt("", RdfFileServiceJena.RDF_FORMAT_MAP.keySet());
 
         options.addOption(opHelp);
         options.addOption(opIn);
