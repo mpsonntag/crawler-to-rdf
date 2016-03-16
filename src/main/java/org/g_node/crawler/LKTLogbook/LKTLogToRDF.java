@@ -30,6 +30,7 @@ import java.util.Map;
 import org.g_node.micro.commons.AppUtils;
 import org.g_node.micro.commons.RDFService;
 import org.g_node.micro.commons.RDFUtils;
+import org.g_node.micro.rdf.RdfConstants;
 
 /**
  * Class converting parsed data to RDF.
@@ -69,12 +70,12 @@ public final class LKTLogToRDF {
         this.experimenterList = new HashMap<>();
         this.model = ModelFactory.createDefaultModel();
 
-        this.model.setNsPrefix(RDFUtils.RDF_NS_RDF_ABR, RDFUtils.RDF_NS_RDF);
-        this.model.setNsPrefix(RDFUtils.RDF_NS_RDFS_ABR, RDFUtils.RDF_NS_RDFS);
-        this.model.setNsPrefix(RDFUtils.RDF_NS_XSD_ABR, RDFUtils.RDF_NS_XSD);
-        this.model.setNsPrefix(RDFUtils.RDF_NS_FOAF_ABR, RDFUtils.RDF_NS_FOAF);
-        this.model.setNsPrefix(RDFUtils.RDF_NS_DC_ABR, RDFUtils.RDF_NS_DC);
-        this.model.setNsPrefix(RDFUtils.RDF_NS_GN_ONT_ABR, RDFUtils.RDF_NS_GN_ONT);
+        this.model.setNsPrefix(RdfConstants.RDF_NS_RDF_ABR, RdfConstants.RDF_NS_RDF);
+        this.model.setNsPrefix(RdfConstants.RDF_NS_RDFS_ABR, RdfConstants.RDF_NS_RDFS);
+        this.model.setNsPrefix(RdfConstants.RDF_NS_XSD_ABR, RdfConstants.RDF_NS_XSD);
+        this.model.setNsPrefix(RdfConstants.RDF_NS_FOAF_ABR, RdfConstants.RDF_NS_FOAF);
+        this.model.setNsPrefix(RdfConstants.RDF_NS_DC_ABR, RdfConstants.RDF_NS_DC);
+        this.model.setNsPrefix(RdfConstants.RDF_NS_GN_ONT_ABR, RdfConstants.RDF_NS_GN_ONT);
         this.model.setNsPrefix(LKTLogToRDF.RDF_NS_LKT_ABR, LKTLogToRDF.RDF_NS_LKT);
     }
 
@@ -206,8 +207,8 @@ public final class LKTLogToRDF {
             this.experimenterList.put(experimenter, AppUtils.getHashSHA(
                                             Collections.singletonList(experimenter)));
 
-            final Property name = this.model.createProperty(String.join("", RDFUtils.RDF_NS_FOAF, "name"));
-            final Resource personRes = this.model.createResource(String.join("", RDFUtils.RDF_NS_FOAF, "Person"));
+            final Property name = this.model.createProperty(String.join("", RdfConstants.RDF_NS_FOAF, "name"));
+            final Resource personRes = this.model.createResource(String.join("", RdfConstants.RDF_NS_FOAF, "Person"));
 
             this.createInst(this.experimenterList.get(experimenter))
                     .addProperty(this.mainProp("hasProvenance"), this.fetchInstance(provID))
@@ -352,7 +353,7 @@ public final class LKTLogToRDF {
      */
     private Resource mainRes(final String resName) {
         return this.model.createResource(
-                String.join("", RDFUtils.RDF_NS_GN_ONT, resName)
+                String.join("", RdfConstants.RDF_NS_GN_ONT, resName)
         );
     }
 
@@ -364,7 +365,7 @@ public final class LKTLogToRDF {
      */
     private Property mainProp(final String propName) {
         return this.model.createProperty(
-                String.join("", RDFUtils.RDF_NS_GN_ONT, propName)
+                String.join("", RdfConstants.RDF_NS_GN_ONT, propName)
         );
     }
 
