@@ -11,6 +11,8 @@
 package org.g_node.converter;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import org.apache.jena.riot.RiotException;
 import org.apache.log4j.Logger;
 import org.g_node.micro.rdf.RdfFileServiceJena;
@@ -33,21 +35,26 @@ public final class ConverterJena {
      * @param outputFormat RDF format of the output file.
      */
     public static void runConverter(final String inputFile, final String outputFile, final String outputFormat) {
+
+        ConverterJena.LOGGER.info("Reading input file...");
+        if (!Files.exists(Paths.get(inputFile))) {
+            ConverterJena.LOGGER.error(String.join("", "File ", inputFile, " does not exist."));
+            return;
+        } else if (!RdfFileServiceJena.isValidRdfFile(inputFile)) {
+            return;
+        }
+
         Model convertData;
 
         try {
-            ConverterJena.LOGGER.info("Reading input file...");
             convertData = RdfFileServiceJena.openModelFromFile(inputFile);
-
         } catch (RiotException e) {
             ConverterJena.LOGGER.error(e.getMessage());
-            // TODO find out how to print stacktrace to log4j logfile
             e.printStackTrace();
             return;
         }
 
         RdfFileServiceJena.saveModelToFile(outputFile, convertData, outputFormat);
-
     }
 
 }
