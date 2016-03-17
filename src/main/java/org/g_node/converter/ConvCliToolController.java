@@ -12,6 +12,7 @@ package org.g_node.converter;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.cli.CommandLine;
@@ -61,12 +62,15 @@ public class ConvCliToolController implements CliToolController {
      */
     public final void run(final CommandLine cmd) {
 
+        final Map<String, String> rdfFormatExtensions = RdfFileServiceJena.RDF_FORMAT_EXTENSION;
+        final Set<String> rdfFormatKeys = RdfFileServiceJena.RDF_FORMAT_MAP.keySet();
+
         final String inputFile = cmd.getOptionValue("i");
         if (!CtrlCheckService.isExistingFile(inputFile)) {
             return;
         }
 
-        final Set<String> checkExtension = RdfFileServiceJena.RDF_FORMAT_EXTENSION.values()
+        final Set<String> checkExtension = rdfFormatExtensions.values()
                 .stream()
                 .map(c->c.toUpperCase(Locale.ENGLISH))
                 .collect(Collectors.toSet());
@@ -79,7 +83,7 @@ public class ConvCliToolController implements CliToolController {
         }
 
         final String outputFormat = cmd.getOptionValue("f", "TTL").toUpperCase(Locale.ENGLISH);
-        if (!CtrlCheckService.isSupportedOutputFormat(outputFormat, RdfFileServiceJena.RDF_FORMAT_MAP.keySet())) {
+        if (!CtrlCheckService.isSupportedOutputFormat(outputFormat, rdfFormatKeys)) {
             return;
         }
 
@@ -87,8 +91,8 @@ public class ConvCliToolController implements CliToolController {
         final String defaultOutputFile = String.join("", inputFile.substring(0, i), "_out");
         String outputFile = cmd.getOptionValue("o", defaultOutputFile);
 
-        if (!outputFile.toLowerCase().endsWith(RdfFileServiceJena.RDF_FORMAT_EXTENSION.get(outputFormat))) {
-            outputFile = String.join("", outputFile, ".", RdfFileServiceJena.RDF_FORMAT_EXTENSION.get(outputFormat));
+        if (!outputFile.toLowerCase().endsWith(rdfFormatExtensions.get(outputFormat))) {
+            outputFile = String.join("", outputFile, ".", rdfFormatExtensions.get(outputFormat));
         }
 
         Model convData;
