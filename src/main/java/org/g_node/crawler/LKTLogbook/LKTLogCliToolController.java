@@ -13,6 +13,7 @@ package org.g_node.crawler.LKTLogbook;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -85,6 +86,9 @@ public final class LKTLogCliToolController implements CliToolController {
      */
     public void run(final CommandLine cmd) {
 
+        final Set<String> rdfFormatMapKeys = RdfFileServiceJena.RDF_FORMAT_MAP.keySet();
+        final Map<String, String> rdfFormatExtensions = RdfFileServiceJena.RDF_FORMAT_EXTENSION;
+
         final String inputFile = cmd.getOptionValue("i");
         if (!CtrlCheckService.isExistingFile(inputFile)) {
             return;
@@ -95,7 +99,7 @@ public final class LKTLogCliToolController implements CliToolController {
         }
 
         final String outputFormat = cmd.getOptionValue("f", "TTL").toUpperCase(Locale.ENGLISH);
-        if (!CtrlCheckService.isSupportedOutputFormat(outputFormat, RdfFileServiceJena.RDF_FORMAT_MAP.keySet())) {
+        if (!CtrlCheckService.isSupportedOutputFormat(outputFormat, rdfFormatMapKeys)) {
             return;
         }
 
@@ -104,8 +108,8 @@ public final class LKTLogCliToolController implements CliToolController {
 
         String outputFile = cmd.getOptionValue("o", defaultOutputFile);
 
-        if (!outputFile.toLowerCase().endsWith(RdfFileServiceJena.RDF_FORMAT_EXTENSION.get(outputFormat))) {
-            outputFile = String.join("", outputFile, ".", RdfFileServiceJena.RDF_FORMAT_EXTENSION.get(outputFormat));
+        if (!outputFile.toLowerCase().endsWith(rdfFormatExtensions.get(outputFormat))) {
+            outputFile = String.join("", outputFile, ".", rdfFormatExtensions.get(outputFormat));
         }
 
         LKTLogCliToolController.LOGGER.info("Parsing input file...");
