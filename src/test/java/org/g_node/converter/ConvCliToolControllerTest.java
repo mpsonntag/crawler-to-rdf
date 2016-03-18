@@ -15,7 +15,6 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -26,9 +25,9 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Unit tests for the {@link ConvCliToolController} class.
@@ -97,7 +96,7 @@ public class ConvCliToolControllerTest {
 
         // Create test files
         final String tmpRoot = System.getProperty("java.io.tmpdir");
-        final String testFolderName = "fileservicetest";
+        final String testFolderName = this.getClass().getSimpleName();
         final String testFileName = "test.txt";
         final Path testFileFolder = Paths.get(tmpRoot, testFolderName);
         final File currTestFile = testFileFolder.resolve(testFileName).toFile();

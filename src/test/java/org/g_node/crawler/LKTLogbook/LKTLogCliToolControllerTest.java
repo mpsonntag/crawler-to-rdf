@@ -71,7 +71,7 @@ public class LKTLogCliToolControllerTest {
         );
 
         final String tmpRoot = System.getProperty("java.io.tmpdir");
-        final String testFolderName = "fileservicetest";
+        final String testFolderName = this.getClass().getSimpleName();
         final String testFileName = "test.txt";
         this.testFileFolder = Paths.get(tmpRoot, testFolderName);
         this.currTestFile = this.testFileFolder.resolve(testFileName).toFile();
@@ -237,4 +237,5 @@ public class LKTLogCliToolControllerTest {
                 );
         this.outStream.reset();
     }
+
 }

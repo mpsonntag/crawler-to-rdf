@@ -19,7 +19,6 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 import java.net.URL;
 import java.nio.file.Paths;
 import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
 

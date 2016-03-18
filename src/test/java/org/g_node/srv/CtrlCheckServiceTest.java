@@ -36,7 +36,7 @@ public class CtrlCheckServiceTest {
     private PrintStream stdout;
 
     private final String tmpRoot = System.getProperty("java.io.tmpdir");
-    private final String testFolderName = "ctrlCheckServiceTest";
+    private final String testFolderName = this.getClass().getSimpleName();
     private final String testFileName = "test.txt";
     private final Path testFileFolder = Paths.get(tmpRoot, testFolderName);
 

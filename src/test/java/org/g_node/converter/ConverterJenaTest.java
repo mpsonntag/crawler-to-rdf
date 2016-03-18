@@ -20,10 +20,10 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Unit tests for the {@link ConverterJenaTest} class.
@@ -36,7 +36,7 @@ public class ConverterJenaTest {
     private PrintStream stdout;
 
     private final String tmpRoot = System.getProperty("java.io.tmpdir");
-    private final String testFolderName = "ConverterJenaTest";
+    private final String testFolderName = this.getClass().getSimpleName();
     private final Path testFileFolder = Paths.get(tmpRoot, testFolderName);
 
     /**
@@ -61,8 +61,7 @@ public class ConverterJenaTest {
     }
 
     /**
-     * Reset Out stream to the console and remove all created
-     * folders and files after the tests are done.
+     * Reset Out stream to the console and remove all created folders and files after the tests are done.
      * @throws Exception
      */
     @After

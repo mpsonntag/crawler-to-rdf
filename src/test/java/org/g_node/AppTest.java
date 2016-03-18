@@ -16,15 +16,14 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Unit tests for the main App. Output and Error streams are redirected
- * from the console to a different PrintStream and reset after tests are finished
- * to avoid mixing tool error messages with actual test error messages.
+ * Unit tests for the main {@link App}. The output stream is redirected from the console to a different PrintStream
+ * and reset after tests are finished to avoid mixing tool error messages with actual test error messages.
  *
  * @author Michael Sonntag (sonntag@bio.lmu.de)
  */
@@ -35,7 +34,7 @@ public class AppTest {
     private PrintStream stdout;
 
     /**
-     * Redirect Error and Out stream.
+     * Redirect Output stream and set up main logger.
      * @throws Exception
      */
     @Before
@@ -119,4 +118,5 @@ public class AppTest {
         currApp.run(startCrawlerArgs);
         assertThat(this.outStream.toString()).contains("[ERROR] Input file file does not exist.");
     }
+
 }
