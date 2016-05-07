@@ -17,7 +17,6 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import java.io.File;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -121,12 +120,69 @@ public class RdfUtilsJenaTest {
 
     @Test
     public void testRemovePropertiesFromModel() throws Exception {
-        // TODO implement test
-        System.out.println("TODO implement testRemovePropertiesFromModel");
-        System.out.println(
-                String.join("", "[TEST DEBUG] Remove properties; Model size: ",
-                        Long.toString(this.baseModel.size()))
+        final String mainRdfFileContent = String.join("",
+                "@prefix res:   <http://test.org/testResource/> .\n" +
+                        "@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+                        "@prefix xs:    <http://www.w3.org/2001/XMLSchema#> .\n" +
+                        "\n" +
+                        "res:RootID\n" +
+                        "        res:hasDeletePropsTestNode    res:RemoveTestID ;\n" +
+                        "        res:hasDeletePropsTestNode    res:KeepTestID .\n" +
+                        "\n" +
+                        "res:RemoveTestID\n" +
+                        "\t\ta\t\t\t\t\t\tres:DeleteAnonPropsTestNode ;\n" +
+                        "\t\trdfs:label              \"RemovePropertiesTest\" ;\n" +
+                        "        rdfs:comment            \"All properties of this node should be removed\"^^xs:string ;\n" +
+                        "        res:hasAnonNode         [ res:hasAnonProperty   \"Anon property literal 1\"^^xs:string ;\n" +
+                        "                                   res:hasAnonProperty   \"Anon property literal 2\"^^xs:string\n" +
+                        "                                ] .\n" +
+                        "\n" +
+                        "res:KeepTestID\n" +
+                        "\t\ta\t\t\t\t\t\tres:DeleteAnonPropsTestNode ;\n" +
+                        "\t\trdfs:label              \"RemovePropertiesTest\" ;\n" +
+                        "        rdfs:comment            \"All properties of this node should be kept.\"^^xs:string ;\n" +
+                        "        res:hasAnonNode         [ res:hasAnonProperty   \"Anon property literal 3\"^^xs:string ;\n" +
+                        "                                   res:hasAnonProperty   \"Anon property literal 4\"^^xs:string ] .\n"
         );
+
+        final String removeRdfFileContent = String.join("",
+                "@prefix res:   <http://test.org/testResource/> .\n" +
+                        "@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+                        "@prefix xs:    <http://www.w3.org/2001/XMLSchema#> .\n" +
+                        "\n" +
+                        "res:RootID\n" +
+                        "        res:hasDeletePropsTestNode    res:RemoveTestID ;\n" +
+                        "        res:hasDeletePropsTestNode    res:KeepTestID .\n" +
+                        "\n" +
+                        "res:RemoveTestID\n" +
+                        "\t\ta\t\t\t\t\t\tres:DeleteAnonPropsTestNode ;\n" +
+                        "\t\trdfs:label              \"RemovePropertiesTest\" ;\n" +
+                        "        rdfs:comment            \"All properties of this node should be removed\"^^xs:string ;\n" +
+                        "        res:hasAnonNode         [ res:hasAnonProperty   \"Anon property literal 1\"^^xs:string ;\n" +
+                        "                                   res:hasAnonProperty   \"Anon property literal 2\"^^xs:string\n" +
+                        "                                ] .\n"
+        );
+
+        final File mainFile = this.testFileFolder.resolve("main.ttl").toFile();
+        FileUtils.write(mainFile, mainRdfFileContent);
+        Model mainMain = RdfFileServiceJena.openModelFromFile(mainFile.getAbsolutePath());
+
+        assertThat(mainMain.size()).isEqualTo(14);
+
+        final File remFile = this.testFileFolder.resolve("remove.ttl").toFile();
+        FileUtils.write(remFile, removeRdfFileContent);
+        Model removeModel = RdfFileServiceJena.openModelFromFile(remFile.getAbsolutePath());
+
+        // Test removes all properties of an identical URI node including linked anonymous node properties.
+        mainMain = RdfUtilsJena.removePropertiesFromModel(removeModel, mainMain, true);
+
+        assertThat(mainMain.size()).isEqualTo(8);
+
+        // Test remove all properties of an identical URI node but keeping linked anonymous node properties.
+        mainMain = RdfFileServiceJena.openModelFromFile(mainFile.getAbsolutePath());
+        mainMain = RdfUtilsJena.removePropertiesFromModel(removeModel, mainMain, false);
+
+        assertThat(mainMain.size()).isEqualTo(10);
     }
 
 }
